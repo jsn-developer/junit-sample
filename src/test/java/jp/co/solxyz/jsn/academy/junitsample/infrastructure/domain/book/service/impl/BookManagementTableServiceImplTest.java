@@ -4,9 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
-import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
@@ -58,23 +56,14 @@ class BookManagementTableServiceImplTest {
 
 		// DBコネクション取得
 		Connection conn;
-		try {
-			conn = jdbcTemplate.getDataSource().getConnection();
-			IDatabaseConnection dbconn = new DatabaseConnection(conn);
+		conn = jdbcTemplate.getDataSource().getConnection();
+		IDatabaseConnection dbconn = new DatabaseConnection(conn);
 
-			QueryDataSet dataSet = new QueryDataSet(dbconn);
-			// retrieve all rows from specified table
-			dataSet.addTable("BOOK_MANAGEMENT_TBL");
+		QueryDataSet dataSet = new QueryDataSet(dbconn);
+		// retrieve all rows from specified table
+		dataSet.addTable("BOOK_MANAGEMENT_TBL");
 
-			// DatabaseOperation.DELETE_ALL.execute(dbconn, dbconn.createDataSet(new String[] { "BOOK_MANAGEMENT_TBL" }));
-			DatabaseOperation.DELETE_ALL.execute(dbconn, dataSet);
-		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (DatabaseUnitException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+		DatabaseOperation.DELETE_ALL.execute(dbconn, dataSet);
 	}
 
 	@Test
@@ -123,10 +112,28 @@ class BookManagementTableServiceImplTest {
 			assertThat(actual).hasSize(0);
 		}
 
-		// TODO 
 		@Test
 		void 書籍在庫情報リスト取得失敗() {
-			fail("未実装");
+			// エラーを発生させるため、今回だけMock化する
+			BookManagementTableRepository mock = mock(BookManagementTableRepository.class);
+
+			// PowerMockが利用不可能な場合の注入方法（最終手段）
+			// var field = BookManagementTableServiceImpl.class.getDeclaredField("bookManagementTableRepository");
+			// field.setAccessible(true);
+			// field.set(sut, mock);
+
+			Whitebox.setInternalState(sut, BookManagementTableRepository.class, mock);
+
+			try {
+				doThrow(new MyDataAccessException()).when(bookManagementTableRepository).findAll();
+
+				sut.searchStockInfo();
+
+				fail("Exception is not fired.");
+			} catch (Exception e) {
+				System.out.println("Success.");
+
+			}
 		}
 	}
 
@@ -145,14 +152,6 @@ class BookManagementTableServiceImplTest {
 			var actualDto = sut.updateStockInfo(dto);
 			assertThat(actualDto).isEqualTo(dto);
 			assertThat(actualDto.getBookName()).isEqualTo(BOOK_NAME);
-		}
-
-		class MyDataAccessException extends DataAccessException {
-
-			public MyDataAccessException() {
-				super("Mocked Error");
-			}
-
 		}
 
 		@Test
@@ -184,6 +183,14 @@ class BookManagementTableServiceImplTest {
 				System.out.println("Success.");
 			}
 		}
+	}
+
+	class MyDataAccessException extends DataAccessException {
+
+		public MyDataAccessException() {
+			super("Mocked Error");
+		}
+
 	}
 
 }

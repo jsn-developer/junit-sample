@@ -38,7 +38,6 @@ public class BookManagementServiceImpl implements BookManagementService {
 			// 例外時は本来であればログ等を吐いたりする
 			e.printStackTrace();
 		}
-		System.out.println(result);
 		return result;
 	}
 

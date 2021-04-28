@@ -38,6 +38,7 @@ import jp.co.solxyz.jsn.academy.junitsample.infrastructure.domain.book.service.B
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 class BookManagementServiceImplTest {
+
 	@InjectMocks
 	BookManagementServiceImpl sut;
 
@@ -53,7 +54,7 @@ class BookManagementServiceImplTest {
 	}
 
 	@Nested
-	class Init {
+	class Initのテスト {
 
 		@Test
 		void 一覧取得成功_0件() throws Exception {
