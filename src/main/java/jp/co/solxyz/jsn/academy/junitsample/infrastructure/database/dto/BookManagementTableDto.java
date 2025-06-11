@@ -1,11 +1,10 @@
 package jp.co.solxyz.jsn.academy.junitsample.infrastructure.database.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 import lombok.Data;
 
 /**
