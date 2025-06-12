@@ -1,7 +1,7 @@
 package jp.co.solxyz.jsn.academy.junitsample.infrastructure.domain.book.service.impl;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
