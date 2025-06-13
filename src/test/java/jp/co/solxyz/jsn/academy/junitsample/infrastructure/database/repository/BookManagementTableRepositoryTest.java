@@ -19,6 +19,7 @@ import jp.co.solxyz.jsn.academy.junitsample.infrastructure.database.dto.BookMana
  * @author JSN
  */
 @DataJpaTest
+@Sql(statements = "TRUNCATE TABLE BOOK_MANAGEMENT_TBL RESTART IDENTITY")
 class BookManagementTableRepositoryTest {
 
   @Autowired
@@ -32,7 +33,6 @@ class BookManagementTableRepositoryTest {
 
     @Test
     @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
     })
@@ -45,7 +45,6 @@ class BookManagementTableRepositoryTest {
 
     @Test
     @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
     })
     void 全件取得成功_1件() {
@@ -56,9 +55,6 @@ class BookManagementTableRepositoryTest {
     }
 
     @Test
-    @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL"
-    })
     void 全件取得成功_0件() {
       var actual = sut.findAll();
       assertThat(actual).hasSize(0);
@@ -70,7 +66,6 @@ class BookManagementTableRepositoryTest {
 
     @Test
     @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
     })
@@ -84,7 +79,6 @@ class BookManagementTableRepositoryTest {
 
     @Test
     @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
     })
     void ID指定取得_存在しないID() {
@@ -118,7 +112,6 @@ class BookManagementTableRepositoryTest {
 
     @Test
     @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, '元の書籍名', 10, 1)"
     })
     void 更新成功() {
@@ -145,7 +138,6 @@ class BookManagementTableRepositoryTest {
 
     @Test
     @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, '削除対象書籍', 10, 1)"
     })
     void 削除成功() {
@@ -162,7 +154,6 @@ class BookManagementTableRepositoryTest {
 
     @Test
     @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, '削除対象書籍', 10, 1)",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, '残す書籍', 20, 1)"
     })
@@ -187,7 +178,6 @@ class BookManagementTableRepositoryTest {
 
     @Test
     @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
     })
@@ -197,9 +187,6 @@ class BookManagementTableRepositoryTest {
     }
 
     @Test
-    @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL"
-    })
     void カウント取得成功_0件() {
       var actual = sut.count();
       assertThat(actual).isEqualTo(0);
@@ -211,7 +198,6 @@ class BookManagementTableRepositoryTest {
 
     @Test
     @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
     })
     void 存在確認_存在する() {
@@ -220,9 +206,6 @@ class BookManagementTableRepositoryTest {
     }
 
     @Test
-    @Sql(statements = {
-        "DELETE BOOK_MANAGEMENT_TBL"
-    })
     void 存在確認_存在しない() {
       var actual = sut.existsById(999);
       assertThat(actual).isFalse();
