@@ -26,11 +26,9 @@ class BookManagementTableRepositoryTest {
 	private BookManagementTableRepository sut;
 
 	// テストデータ生成用のヘルパーメソッド
-	private BookManagementTableDto createBook(Integer id, String name, Integer stock, Integer version) {
+	private BookManagementTableDto createBook(int id, String name, int stock, int version) {
 		BookManagementTableDto dto = new BookManagementTableDto();
-		if (id != null) {
-			dto.setBookId(id);
-		}
+		dto.setBookId(id);
 		dto.setBookName(name);
 		dto.setStock(stock);
 		dto.setVersion(version);
