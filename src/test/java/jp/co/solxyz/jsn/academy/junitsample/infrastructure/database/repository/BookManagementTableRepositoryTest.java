@@ -26,8 +26,26 @@ class BookManagementTableRepositoryTest {
 	@Autowired
 	private BookManagementTableRepository sut;
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	// テストデータ生成用のヘルパーメソッド
+	private BookManagementTableDto createBook(Integer id, String name, Integer stock, Integer version) {
+		BookManagementTableDto dto = new BookManagementTableDto();
+		if (id != null) {
+			dto.setBookId(id);
+		}
+		dto.setBookName(name);
+		dto.setStock(stock);
+		dto.setVersion(version);
+		return dto;
+	}
+
+	// 特定のよく使う本を生成するメソッド
+	private BookManagementTableDto createSpringBootBook() {
+		return createBook(1, "Spring boot実践入門", 10, 1);
+	}
+
+	private BookManagementTableDto createJUnitBook() {
+		return createBook(2, "JUnit詳解", 200, 3);
+	}
 
 	@Nested
 	class FindAll {
@@ -39,10 +57,14 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
 		})
 		void findAllSuccess2Records() {
+			var springBootBook = createSpringBootBook();
+			var junitBook = createJUnitBook();
+
 			var actual = sut.findAll();
+
 			assertThat(actual).hasSize(2);
-			assertThat(actual.get(0).getBookName()).isEqualTo("Spring boot実践入門");
-			assertThat(actual.get(1).getBookName()).isEqualTo("JUnit詳解");
+			assertThat(actual.get(0).getBookName()).isEqualTo(springBootBook.getBookName());
+			assertThat(actual.get(1).getBookName()).isEqualTo(junitBook.getBookName());
 		}
 
 		@Test
@@ -51,10 +73,13 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
 		})
 		void findAllSuccess1Record() {
+			var springBootBook = createSpringBootBook();
+
 			var actual = sut.findAll();
+
 			assertThat(actual).hasSize(1);
-			assertThat(actual.get(0).getBookName()).isEqualTo("Spring boot実践入門");
-			assertThat(actual.get(0).getStock()).isEqualTo(10);
+			assertThat(actual.get(0).getBookName()).isEqualTo(springBootBook.getBookName());
+			assertThat(actual.get(0).getStock()).isEqualTo(springBootBook.getStock());
 		}
 
 		@Test
@@ -66,7 +91,6 @@ class BookManagementTableRepositoryTest {
 	}
 
 	@Nested
-	@DisplayName("findById")
 	class FindById {
 
 		@Test
@@ -76,11 +100,14 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
 		})
 		void findByIdSuccess() {
+			var springBootBook = createSpringBootBook();
+
 			var actual = sut.findById(1);
+
 			assertThat(actual).isPresent();
-			assertThat(actual.get().getBookName()).isEqualTo("Spring boot実践入門");
-			assertThat(actual.get().getStock()).isEqualTo(10);
-			assertThat(actual.get().getVersion()).isEqualTo(1);
+			assertThat(actual.get().getBookName()).isEqualTo(springBootBook.getBookName());
+			assertThat(actual.get().getStock()).isEqualTo(springBootBook.getStock());
+			assertThat(actual.get().getVersion()).isEqualTo(springBootBook.getVersion());
 		}
 
 		@Test
@@ -92,7 +119,6 @@ class BookManagementTableRepositoryTest {
 	}
 
 	@Nested
-	@DisplayName("saveAndFlush")
 	class SaveAndFlush {
 
 		@Test
@@ -141,7 +167,6 @@ class BookManagementTableRepositoryTest {
 	}
 
 	@Nested
-	@DisplayName("delete")
 	class Delete {
 
 		@Test
@@ -206,7 +231,6 @@ class BookManagementTableRepositoryTest {
 	}
 
 	@Nested
-	@DisplayName("existsById")
 	class ExistsById {
 
 		@Test
