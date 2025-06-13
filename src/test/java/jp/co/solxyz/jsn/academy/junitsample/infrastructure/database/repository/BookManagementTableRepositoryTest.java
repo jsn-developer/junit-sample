@@ -2,6 +2,7 @@ package jp.co.solxyz.jsn.academy.junitsample.infrastructure.database.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,12 @@ class BookManagementTableRepositoryTest {
   class FindAll {
 
     @Test
+    @DisplayName("全件取得成功_2件")
     @Sql(statements = {
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
     })
-    void 全件取得成功_2件() {
+    void findAllSuccess2Records() {
       var actual = sut.findAll();
       assertThat(actual).hasSize(2);
       assertThat(actual.get(0).getBookName()).isEqualTo("Spring boot実践入門");
@@ -44,10 +46,11 @@ class BookManagementTableRepositoryTest {
     }
 
     @Test
+    @DisplayName("全件取得成功_1件")
     @Sql(statements = {
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
     })
-    void 全件取得成功_1件() {
+    void findAllSuccess1Record() {
       var actual = sut.findAll();
       assertThat(actual).hasSize(1);
       assertThat(actual.get(0).getBookName()).isEqualTo("Spring boot実践入門");
@@ -55,21 +58,24 @@ class BookManagementTableRepositoryTest {
     }
 
     @Test
-    void 全件取得成功_0件() {
+    @DisplayName("全件取得成功_0件")
+    void findAllSuccess0Records() {
       var actual = sut.findAll();
       assertThat(actual).hasSize(0);
     }
   }
 
   @Nested
+  @DisplayName("findById")
   class FindById {
 
     @Test
+    @DisplayName("ID指定取得成功")
     @Sql(statements = {
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
     })
-    void ID指定取得成功() {
+    void findByIdSuccess() {
       var actual = sut.findById(1);
       assertThat(actual).isPresent();
       assertThat(actual.get().getBookName()).isEqualTo("Spring boot実践入門");
@@ -78,20 +84,20 @@ class BookManagementTableRepositoryTest {
     }
 
     @Test
-    @Sql(statements = {
-        "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
-    })
-    void ID指定取得_存在しないID() {
+    @DisplayName("ID指定取得_存在しないID")
+    void findByIdNotFound() {
       var actual = sut.findById(999);
       assertThat(actual).isEmpty();
     }
   }
 
   @Nested
+  @DisplayName("saveAndFlush")
   class SaveAndFlush {
 
     @Test
-    void 新規保存成功() {
+    @DisplayName("新規保存成功")
+    void saveNewRecordSuccess() {
       BookManagementTableDto dto = new BookManagementTableDto();
       dto.setBookName("新しい書籍");
       dto.setStock(50);
@@ -111,10 +117,11 @@ class BookManagementTableRepositoryTest {
     }
 
     @Test
+    @DisplayName("更新成功")
     @Sql(statements = {
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, '元の書籍名', 10, 1)"
     })
-    void 更新成功() {
+    void updateRecordSuccess() {
       var existingDto = sut.findById(1).get();
       existingDto.setBookName("更新後の書籍名");
       existingDto.setStock(20);
@@ -134,13 +141,15 @@ class BookManagementTableRepositoryTest {
   }
 
   @Nested
+  @DisplayName("delete")
   class Delete {
 
     @Test
+    @DisplayName("削除成功")
     @Sql(statements = {
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, '削除対象書籍', 10, 1)"
     })
-    void 削除成功() {
+    void deleteRecordSuccess() {
       var targetDto = sut.findById(1).get();
 
       sut.delete(targetDto);
@@ -153,11 +162,12 @@ class BookManagementTableRepositoryTest {
     }
 
     @Test
+    @DisplayName("ID指定削除成功")
     @Sql(statements = {
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, '削除対象書籍', 10, 1)",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, '残す書籍', 20, 1)"
     })
-    void ID指定削除成功() {
+    void deleteByIdSuccess() {
       sut.deleteById(1);
 
       var deleted = sut.findById(1);
@@ -177,36 +187,41 @@ class BookManagementTableRepositoryTest {
   class Count {
 
     @Test
+    @DisplayName("カウント取得成功_2件")
     @Sql(statements = {
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)",
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
     })
-    void カウント取得成功_2件() {
+    void countRecords2() {
       var actual = sut.count();
       assertThat(actual).isEqualTo(2);
     }
 
     @Test
-    void カウント取得成功_0件() {
+    @DisplayName("カウント取得成功_0件")
+    void countRecords0() {
       var actual = sut.count();
       assertThat(actual).isEqualTo(0);
     }
   }
 
   @Nested
+  @DisplayName("existsById")
   class ExistsById {
 
     @Test
+    @DisplayName("存在確認_存在する")
     @Sql(statements = {
         "INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
     })
-    void 存在確認_存在する() {
+    void existsByIdTrue() {
       var actual = sut.existsById(1);
       assertThat(actual).isTrue();
     }
 
     @Test
-    void 存在確認_存在しない() {
+    @DisplayName("存在確認_存在しない")
+    void existsByIdFalse() {
       var actual = sut.existsById(999);
       assertThat(actual).isFalse();
     }
