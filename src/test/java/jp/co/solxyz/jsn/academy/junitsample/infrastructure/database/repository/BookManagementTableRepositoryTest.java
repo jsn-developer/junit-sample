@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-@DataJpaTest
-@Sql(statements = "TRUNCATE TABLE BOOK_MANAGEMENT_TBL RESTART IDENTITY")
 class BookManagementTableRepositoryTest {
 
 	@Test
