@@ -31,7 +31,7 @@ class BookManagementScreenControllerTest {
 	class Init {
 
 		@Test
-		void 書籍在庫情報リスト取得成功_0件() {
+		void 書籍在庫情報リスト取得成功_0件() throws Exception {
 			// Arrange
 			List<BookManagementTableDto> emptyList = new ArrayList<>();
 			when(bookManagementService.init()).thenReturn(emptyList);
@@ -44,7 +44,7 @@ class BookManagementScreenControllerTest {
 		}
 
 		@Test
-		void 書籍在庫情報リスト取得成功_1件() {
+		void 書籍在庫情報リスト取得成功_1件() throws Exception {
 			// Arrange
 			List<BookManagementTableDto> bookList = new ArrayList<>();
 
@@ -61,7 +61,7 @@ class BookManagementScreenControllerTest {
 		}
 
 		@Test
-		void 書籍在庫情報リスト取得成功_2件() {
+		void 書籍在庫情報リスト取得成功_2件() throws Exception {
 			// Arrange
 			List<BookManagementTableDto> bookList = new ArrayList<>();
 
@@ -80,7 +80,7 @@ class BookManagementScreenControllerTest {
 		}
 
 		@Test
-		void 書籍在庫情報リスト取得失敗() {
+		void 書籍在庫情報リスト取得失敗() throws Exception {
 			// Arrange
 			final String EXPECTED_MSG = "書籍情報がありません。";
 			when(bookManagementService.init()).thenReturn(null);
@@ -97,7 +97,7 @@ class BookManagementScreenControllerTest {
 	class Update {
 
 		@Test
-		void 書籍在庫情報リスト更新成功() {
+		void 書籍在庫情報リスト更新成功() throws Exception {
 			// Arrange
 			final String EXPECTED_MSG = "正常に更新されました。";
 			when(bookManagementService.update(5, "test", 100)).thenReturn(0);
@@ -116,7 +116,7 @@ class BookManagementScreenControllerTest {
 		}
 
 		@Test
-		void 書籍在庫情報リスト取得失敗() {
+		void 書籍在庫情報リスト取得失敗() throws Exception {
 			// Arrange
 			final String EXPECTED_MSG = "更新に失敗しました。";
 			when(bookManagementService.update(5, "test", 100)).thenReturn(1);
@@ -139,7 +139,7 @@ class BookManagementScreenControllerTest {
 	class Order {
 
 		@Test
-		void 書籍在庫情報リスト更新成功() {
+		void 書籍在庫情報リスト更新成功() throws Exception {
 			// Arrange
 			final String EXPECTED_MSG = "正常に発注されました。";
 			when(bookManagementService.order(5, "test", 100)).thenReturn(0);
@@ -158,7 +158,7 @@ class BookManagementScreenControllerTest {
 		}
 
 		@Test
-		void 書籍在庫情報リスト取得失敗() {
+		void 書籍在庫情報リスト取得失敗() throws Exception {
 			// Arrange
 			final String EXPECTED_MSG = "発注に失敗しました。";
 			when(bookManagementService.order(5, "test", 100)).thenReturn(1);
