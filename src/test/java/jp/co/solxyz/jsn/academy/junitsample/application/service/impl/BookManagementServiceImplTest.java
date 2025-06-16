@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,7 +58,8 @@ class BookManagementServiceImplTest {
 	class Initのテスト {
 
 		@Test
-		void 一覧取得成功_0件() throws Exception {
+		@DisplayName("一覧取得成功_0件")
+		void initSuccess0Records() throws Exception {
 			List<BookManagementTableDto> result = new ArrayList<>();
 
 			doReturn(result).when(bookManagementTableService).searchStockInfo();
@@ -66,7 +68,8 @@ class BookManagementServiceImplTest {
 		}
 
 		@Test
-		void 一覧取得成功_1件() throws Exception {
+		@DisplayName("一覧取得成功_1件")
+		void initSuccess1Record() throws Exception {
 			List<BookManagementTableDto> result = new ArrayList<>();
 			result.add(new BookManagementTableDto());
 
@@ -77,7 +80,8 @@ class BookManagementServiceImplTest {
 		}
 
 		@Test
-		void 一覧取得成功_2件() throws Exception {
+		@DisplayName("一覧取得成功_2件")
+		void initSuccess2Records() throws Exception {
 			List<BookManagementTableDto> result = new ArrayList<>();
 			result.add(new BookManagementTableDto());
 			result.add(new BookManagementTableDto());
@@ -88,7 +92,8 @@ class BookManagementServiceImplTest {
 		}
 
 		@Test
-		void 一覧取得失敗() {
+		@DisplayName("一覧取得失敗")
+		void initFailure() {
 			doThrow(new DataAccessException("") {
 			}).when(bookManagementTableService).searchStockInfo();
 			assertThat(sut.init()).isNull();
@@ -99,7 +104,8 @@ class BookManagementServiceImplTest {
 	class Update {
 
 		@Test
-		void 在庫情報更新成功() {
+		@DisplayName("在庫情報更新成功")
+		void updateSuccess() {
 			BookManagementTableDto dto = new BookManagementTableDto();
 
 			doReturn(dto).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
@@ -108,7 +114,8 @@ class BookManagementServiceImplTest {
 		}
 
 		@Test
-		void 在庫情報更新失敗() {
+		@DisplayName("在庫情報更新失敗")
+		void updateFailure() {
 			doThrow(new DataAccessException("") {
 			}).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
 
@@ -120,7 +127,8 @@ class BookManagementServiceImplTest {
 	class Order {
 
 		@Test
-		void 発注成功_登録成功() {
+		@DisplayName("発注成功_登録成功")
+		void orderSuccessWithRegistrationSuccess() {
 			BookOrderResponse res = new BookOrderResponse();
 			BookManagementTableDto dto = new BookManagementTableDto();
 
@@ -131,7 +139,8 @@ class BookManagementServiceImplTest {
 		}
 
 		@Test
-		void 発注成功_登録失敗() {
+		@DisplayName("発注成功_登録失敗")
+		void orderSuccessWithRegistrationFailure() {
 			BookOrderResponse res = new BookOrderResponse();
 
 			doReturn(res).when(bookOrderApi).order(any(BookOrderRequest.class));
@@ -142,7 +151,8 @@ class BookManagementServiceImplTest {
 		}
 
 		@Test
-		void 発注失敗() {
+		@DisplayName("発注失敗")
+		void orderFailure() {
 			doThrow(new RestClientException("") {
 			}).when(bookOrderApi).order(any(BookOrderRequest.class));
 
