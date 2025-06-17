@@ -151,6 +151,7 @@ class BookManagementTableRepositoryTest {
 			assertThat(actual.getBookId()).isEqualTo(1);
 			assertThat(actual.getBookName()).isEqualTo("更新後の書籍名");
 			assertThat(actual.getStock()).isEqualTo(20);
+			assertThat(actual.getVersion()).isEqualTo(2);
 		}
 	}
 
