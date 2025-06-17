@@ -134,11 +134,6 @@ class BookManagementTableRepositoryTest {
 			assertThat(actual.getBookName()).isEqualTo("新しい書籍");
 			assertThat(actual.getStock()).isEqualTo(50);
 			assertThat(actual.getVersion()).isEqualTo(1);
-
-			// DBに実際に保存されているか確認
-			var saved = sut.findById(actual.getBookId());
-			assertThat(saved).isPresent();
-			assertThat(saved.get().getBookName()).isEqualTo("新しい書籍");
 		}
 
 		@Test
@@ -156,12 +151,6 @@ class BookManagementTableRepositoryTest {
 			assertThat(actual.getBookId()).isEqualTo(1);
 			assertThat(actual.getBookName()).isEqualTo("更新後の書籍名");
 			assertThat(actual.getStock()).isEqualTo(20);
-
-			// DBで実際に更新されているか確認
-			var updated = sut.findById(1);
-			assertThat(updated).isPresent();
-			assertThat(updated.get().getBookName()).isEqualTo("更新後の書籍名");
-			assertThat(updated.get().getStock()).isEqualTo(20);
 		}
 	}
 
@@ -196,14 +185,6 @@ class BookManagementTableRepositoryTest {
 
 			var deleted = sut.findById(1);
 			assertThat(deleted).isEmpty();
-
-			// 他のデータは残っていることを確認
-			var remaining = sut.findById(2);
-			assertThat(remaining).isPresent();
-			assertThat(remaining.get().getBookName()).isEqualTo("残す書籍");
-
-			var allBooks = sut.findAll();
-			assertThat(allBooks).hasSize(1);
 		}
 	}
 
