@@ -51,8 +51,6 @@ class BookManagementTableRepositoryTest {
 			var actual = sut.findAll();
 
 			assertThat(actual).hasSize(2);
-			assertThat(actual.get(0).getBookName()).isEqualTo(SPRING_BOOT_BOOK.getBookName());
-			assertThat(actual.get(1).getBookName()).isEqualTo(JUNIT_BOOK.getBookName());
 		}
 
 		@Test
@@ -64,15 +62,32 @@ class BookManagementTableRepositoryTest {
 			var actual = sut.findAll();
 
 			assertThat(actual).hasSize(1);
-			assertThat(actual.get(0).getBookName()).isEqualTo(SPRING_BOOT_BOOK.getBookName());
-			assertThat(actual.get(0).getStock()).isEqualTo(SPRING_BOOT_BOOK.getStock());
 		}
 
 		@Test
 		@DisplayName("全件取得成功_0件")
 		void findAllSuccess0Records() {
 			var actual = sut.findAll();
+
 			assertThat(actual).hasSize(0);
+		}
+
+		@Test
+		@DisplayName("全件取得成功_データ確認")
+		@Sql(statements = {
+				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)",
+				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
+		})
+		void findAllDataVerification() {
+			var actual = sut.findAll();
+
+			assertThat(actual.get(0).getBookName()).isEqualTo(SPRING_BOOT_BOOK.getBookName());
+			assertThat(actual.get(0).getStock()).isEqualTo(SPRING_BOOT_BOOK.getStock());
+			assertThat(actual.get(0).getVersion()).isEqualTo(SPRING_BOOT_BOOK.getVersion());
+
+			assertThat(actual.get(1).getBookName()).isEqualTo(JUNIT_BOOK.getBookName());
+			assertThat(actual.get(1).getStock()).isEqualTo(JUNIT_BOOK.getStock());
+			assertThat(actual.get(1).getVersion()).isEqualTo(JUNIT_BOOK.getVersion());
 		}
 	}
 
