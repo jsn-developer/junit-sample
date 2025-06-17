@@ -26,7 +26,7 @@ class BookManagementTableRepositoryTest {
 	private BookManagementTableRepository sut;
 
 	// テストデータ生成用のヘルパーメソッド
-	private BookManagementTableDto createBook(int id, String name, int stock, int version) {
+	private static BookManagementTableDto createBook(int id, String name, int stock, int version) {
 		BookManagementTableDto dto = new BookManagementTableDto();
 		dto.setBookId(id);
 		dto.setBookName(name);
@@ -35,14 +35,9 @@ class BookManagementTableRepositoryTest {
 		return dto;
 	}
 
-	// 特定のよく使う本を生成するメソッド
-	private BookManagementTableDto createSpringBootBook() {
-		return createBook(1, "Spring boot実践入門", 10, 1);
-	}
+	private static final BookManagementTableDto SPRING_BOOT_BOOK = createBook(1, "Spring boot実践入門", 10, 1);
 
-	private BookManagementTableDto createJUnitBook() {
-		return createBook(2, "JUnit詳解", 200, 3);
-	}
+	private static final BookManagementTableDto JUNIT_BOOK = createBook(2, "JUnit詳解", 200, 3);
 
 	@Nested
 	class FindAll {
@@ -54,14 +49,11 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
 		})
 		void findAllSuccess2Records() {
-			var springBootBook = createSpringBootBook();
-			var junitBook = createJUnitBook();
-
 			var actual = sut.findAll();
 
 			assertThat(actual).hasSize(2);
-			assertThat(actual.get(0).getBookName()).isEqualTo(springBootBook.getBookName());
-			assertThat(actual.get(1).getBookName()).isEqualTo(junitBook.getBookName());
+			assertThat(actual.get(0).getBookName()).isEqualTo(SPRING_BOOT_BOOK.getBookName());
+			assertThat(actual.get(1).getBookName()).isEqualTo(JUNIT_BOOK.getBookName());
 		}
 
 		@Test
@@ -70,13 +62,11 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
 		})
 		void findAllSuccess1Record() {
-			var springBootBook = createSpringBootBook();
-
 			var actual = sut.findAll();
 
 			assertThat(actual).hasSize(1);
-			assertThat(actual.get(0).getBookName()).isEqualTo(springBootBook.getBookName());
-			assertThat(actual.get(0).getStock()).isEqualTo(springBootBook.getStock());
+			assertThat(actual.get(0).getBookName()).isEqualTo(SPRING_BOOT_BOOK.getBookName());
+			assertThat(actual.get(0).getStock()).isEqualTo(SPRING_BOOT_BOOK.getStock());
 		}
 
 		@Test
@@ -97,14 +87,12 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
 		})
 		void findByIdSuccess() {
-			var springBootBook = createSpringBootBook();
-
 			var actual = sut.findById(1);
 
 			assertThat(actual).isPresent();
-			assertThat(actual.get().getBookName()).isEqualTo(springBootBook.getBookName());
-			assertThat(actual.get().getStock()).isEqualTo(springBootBook.getStock());
-			assertThat(actual.get().getVersion()).isEqualTo(springBootBook.getVersion());
+			assertThat(actual.get().getBookName()).isEqualTo(SPRING_BOOT_BOOK.getBookName());
+			assertThat(actual.get().getStock()).isEqualTo(SPRING_BOOT_BOOK.getStock());
+			assertThat(actual.get().getVersion()).isEqualTo(SPRING_BOOT_BOOK.getVersion());
 		}
 
 		@Test
