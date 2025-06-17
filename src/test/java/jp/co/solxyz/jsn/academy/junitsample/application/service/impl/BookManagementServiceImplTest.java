@@ -7,14 +7,12 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,11 +46,6 @@ class BookManagementServiceImplTest {
 
 	@Mock
 	BookOrderApi bookOrderApi;
-
-	@BeforeEach
-	public void setup() {
-		MockitoAnnotations.openMocks(this);
-	}
 
 	@Nested
 	class Initのテスト {
