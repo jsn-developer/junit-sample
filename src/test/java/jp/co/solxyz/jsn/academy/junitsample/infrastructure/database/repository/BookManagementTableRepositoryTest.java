@@ -81,10 +81,12 @@ class BookManagementTableRepositoryTest {
 		void findAllDataVerification() {
 			var actual = sut.findAll();
 
+			assertThat(actual.get(0).getBookId()).isEqualTo(SPRING_BOOT_BOOK.getBookId());
 			assertThat(actual.get(0).getBookName()).isEqualTo(SPRING_BOOT_BOOK.getBookName());
 			assertThat(actual.get(0).getStock()).isEqualTo(SPRING_BOOT_BOOK.getStock());
 			assertThat(actual.get(0).getVersion()).isEqualTo(SPRING_BOOT_BOOK.getVersion());
 
+			assertThat(actual.get(1).getBookId()).isEqualTo(JUNIT_BOOK.getBookId());
 			assertThat(actual.get(1).getBookName()).isEqualTo(JUNIT_BOOK.getBookName());
 			assertThat(actual.get(1).getStock()).isEqualTo(JUNIT_BOOK.getStock());
 			assertThat(actual.get(1).getVersion()).isEqualTo(JUNIT_BOOK.getVersion());
