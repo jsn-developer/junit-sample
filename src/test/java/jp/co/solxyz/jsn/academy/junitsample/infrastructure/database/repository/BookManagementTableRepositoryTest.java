@@ -19,7 +19,6 @@ import jp.co.solxyz.jsn.academy.junitsample.infrastructure.database.dto.BookMana
  * @author JSN
  */
 @DataJpaTest
-@Sql(statements = "TRUNCATE TABLE BOOK_MANAGEMENT_TBL RESTART IDENTITY")
 class BookManagementTableRepositoryTest {
 
 	@Autowired
