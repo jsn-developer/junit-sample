@@ -19,7 +19,7 @@ class BookOrderApiTest {
 	private static final String URL = "https://www.solxyz.co.jp/";
 
 	@InjectMocks
-	BookOrderApi sut;
+	BookOrderApi bookOrderApi;
 
 	@Mock
 	RestTemplate restTemplate;
@@ -37,7 +37,7 @@ class BookOrderApiTest {
 		when(restTemplate.postForObject(eq(URL), any(BookOrderRequest.class), eq(BookOrderResponse.class)))
 				.thenReturn(res);
 
-		assertThat(sut.order(req)).isEqualTo(res);
+		assertThat(bookOrderApi.order(req)).isEqualTo(res);
 	}
 
 }

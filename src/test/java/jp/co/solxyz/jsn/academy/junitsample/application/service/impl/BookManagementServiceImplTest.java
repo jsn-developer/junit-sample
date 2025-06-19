@@ -7,13 +7,12 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,7 +39,7 @@ import jp.co.solxyz.jsn.academy.junitsample.infrastructure.domain.book.service.B
 class BookManagementServiceImplTest {
 
 	@InjectMocks
-	BookManagementServiceImpl sut;
+	BookManagementServiceImpl bookManagementService;
 
 	@Spy
 	BookManagementTableService bookManagementTableService;
@@ -48,50 +47,49 @@ class BookManagementServiceImplTest {
 	@Mock
 	BookOrderApi bookOrderApi;
 
-	@BeforeEach
-	public void setup() {
-		MockitoAnnotations.openMocks(this);
-	}
-
 	@Nested
 	class Initのテスト {
 
 		@Test
-		void 一覧取得成功_0件() throws Exception {
+		@DisplayName("一覧取得成功_0件")
+		void initSuccess0Records() throws Exception {
 			List<BookManagementTableDto> result = new ArrayList<>();
 
 			doReturn(result).when(bookManagementTableService).searchStockInfo();
 
-			assertThat(sut.init()).isEqualTo(result).hasSize(0);
+			assertThat(bookManagementService.init()).isEqualTo(result).hasSize(0);
 		}
 
 		@Test
-		void 一覧取得成功_1件() throws Exception {
+		@DisplayName("一覧取得成功_1件")
+		void initSuccess1Record() throws Exception {
 			List<BookManagementTableDto> result = new ArrayList<>();
 			result.add(new BookManagementTableDto());
 
 			doReturn(result).when(bookManagementTableService).searchStockInfo();
 
-			assertThat(sut.init()).isEqualTo(result).hasSize(1);
+			assertThat(bookManagementService.init()).isEqualTo(result).hasSize(1);
 
 		}
 
 		@Test
-		void 一覧取得成功_2件() throws Exception {
+		@DisplayName("一覧取得成功_2件")
+		void initSuccess2Records() throws Exception {
 			List<BookManagementTableDto> result = new ArrayList<>();
 			result.add(new BookManagementTableDto());
 			result.add(new BookManagementTableDto());
 
 			doReturn(result).when(bookManagementTableService).searchStockInfo();
 
-			assertThat(sut.init()).isEqualTo(result).hasSize(2);
+			assertThat(bookManagementService.init()).isEqualTo(result).hasSize(2);
 		}
 
 		@Test
-		void 一覧取得失敗() {
+		@DisplayName("一覧取得失敗")
+		void initFailure() {
 			doThrow(new DataAccessException("") {
 			}).when(bookManagementTableService).searchStockInfo();
-			assertThat(sut.init()).isNull();
+			assertThat(bookManagementService.init()).isNull();
 		}
 	}
 
@@ -99,20 +97,22 @@ class BookManagementServiceImplTest {
 	class Update {
 
 		@Test
-		void 在庫情報更新成功() {
+		@DisplayName("在庫情報更新成功")
+		void updateSuccess() {
 			BookManagementTableDto dto = new BookManagementTableDto();
 
 			doReturn(dto).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
 
-			assertThat(sut.update(0, "", 0)).isEqualTo(0);
+			assertThat(bookManagementService.update(0, "", 0)).isEqualTo(0);
 		}
 
 		@Test
-		void 在庫情報更新失敗() {
+		@DisplayName("在庫情報更新失敗")
+		void updateFailure() {
 			doThrow(new DataAccessException("") {
 			}).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
 
-			assertThat(sut.update(0, "", 0)).isEqualTo(1);
+			assertThat(bookManagementService.update(0, "", 0)).isEqualTo(1);
 		}
 	}
 
@@ -120,33 +120,36 @@ class BookManagementServiceImplTest {
 	class Order {
 
 		@Test
-		void 発注成功_登録成功() {
+		@DisplayName("発注成功_登録成功")
+		void orderSuccessWithRegistrationSuccess() {
 			BookOrderResponse res = new BookOrderResponse();
 			BookManagementTableDto dto = new BookManagementTableDto();
 
 			doReturn(res).when(bookOrderApi).order(any(BookOrderRequest.class));
 			doReturn(dto).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
 
-			assertThat(sut.order(0, "", 0)).isEqualTo(0);
+			assertThat(bookManagementService.order(0, "", 0)).isEqualTo(0);
 		}
 
 		@Test
-		void 発注成功_登録失敗() {
+		@DisplayName("発注成功_登録失敗")
+		void orderSuccessWithRegistrationFailure() {
 			BookOrderResponse res = new BookOrderResponse();
 
 			doReturn(res).when(bookOrderApi).order(any(BookOrderRequest.class));
 			doThrow(new DataAccessException("") {
 			}).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
 
-			assertThat(sut.order(0, "", 0)).isEqualTo(1);
+			assertThat(bookManagementService.order(0, "", 0)).isEqualTo(1);
 		}
 
 		@Test
-		void 発注失敗() {
+		@DisplayName("発注失敗")
+		void orderFailure() {
 			doThrow(new RestClientException("") {
 			}).when(bookOrderApi).order(any(BookOrderRequest.class));
 
-			assertThat(sut.order(0, "", 0)).isEqualTo(1);
+			assertThat(bookManagementService.order(0, "", 0)).isEqualTo(1);
 		}
 	}
 
