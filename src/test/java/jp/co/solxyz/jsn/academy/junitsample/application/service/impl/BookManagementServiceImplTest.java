@@ -28,7 +28,7 @@ import jp.co.solxyz.jsn.academy.junitsample.infrastructure.domain.book.service.B
 class BookManagementServiceImplTest {
 
 	@InjectMocks
-	BookManagementServiceImpl sut;
+	BookManagementServiceImpl bookManagementService;
 
 	@Spy
 	BookManagementTableService bookManagementTableService;
