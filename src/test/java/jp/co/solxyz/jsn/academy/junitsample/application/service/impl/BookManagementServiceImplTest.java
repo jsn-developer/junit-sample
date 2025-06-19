@@ -39,7 +39,7 @@ import jp.co.solxyz.jsn.academy.junitsample.infrastructure.domain.book.service.B
 class BookManagementServiceImplTest {
 
 	@InjectMocks
-	BookManagementServiceImpl sut;
+	BookManagementServiceImpl bookManagementService;
 
 	@Spy
 	BookManagementTableService bookManagementTableService;
@@ -57,7 +57,7 @@ class BookManagementServiceImplTest {
 
 			doReturn(result).when(bookManagementTableService).searchStockInfo();
 
-			assertThat(sut.init()).isEqualTo(result).hasSize(0);
+			assertThat(bookManagementService.init()).isEqualTo(result).hasSize(0);
 		}
 
 		@Test
@@ -68,7 +68,7 @@ class BookManagementServiceImplTest {
 
 			doReturn(result).when(bookManagementTableService).searchStockInfo();
 
-			assertThat(sut.init()).isEqualTo(result).hasSize(1);
+			assertThat(bookManagementService.init()).isEqualTo(result).hasSize(1);
 
 		}
 
@@ -81,7 +81,7 @@ class BookManagementServiceImplTest {
 
 			doReturn(result).when(bookManagementTableService).searchStockInfo();
 
-			assertThat(sut.init()).isEqualTo(result).hasSize(2);
+			assertThat(bookManagementService.init()).isEqualTo(result).hasSize(2);
 		}
 
 		@Test
@@ -89,7 +89,7 @@ class BookManagementServiceImplTest {
 		void initFailure() {
 			doThrow(new DataAccessException("") {
 			}).when(bookManagementTableService).searchStockInfo();
-			assertThat(sut.init()).isNull();
+			assertThat(bookManagementService.init()).isNull();
 		}
 	}
 
@@ -103,7 +103,7 @@ class BookManagementServiceImplTest {
 
 			doReturn(dto).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
 
-			assertThat(sut.update(0, "", 0)).isEqualTo(0);
+			assertThat(bookManagementService.update(0, "", 0)).isEqualTo(0);
 		}
 
 		@Test
@@ -112,7 +112,7 @@ class BookManagementServiceImplTest {
 			doThrow(new DataAccessException("") {
 			}).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
 
-			assertThat(sut.update(0, "", 0)).isEqualTo(1);
+			assertThat(bookManagementService.update(0, "", 0)).isEqualTo(1);
 		}
 	}
 
@@ -128,7 +128,7 @@ class BookManagementServiceImplTest {
 			doReturn(res).when(bookOrderApi).order(any(BookOrderRequest.class));
 			doReturn(dto).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
 
-			assertThat(sut.order(0, "", 0)).isEqualTo(0);
+			assertThat(bookManagementService.order(0, "", 0)).isEqualTo(0);
 		}
 
 		@Test
@@ -140,7 +140,7 @@ class BookManagementServiceImplTest {
 			doThrow(new DataAccessException("") {
 			}).when(bookManagementTableService).updateStockInfo(any(BookManagementTableDto.class));
 
-			assertThat(sut.order(0, "", 0)).isEqualTo(1);
+			assertThat(bookManagementService.order(0, "", 0)).isEqualTo(1);
 		}
 
 		@Test
@@ -149,7 +149,7 @@ class BookManagementServiceImplTest {
 			doThrow(new RestClientException("") {
 			}).when(bookOrderApi).order(any(BookOrderRequest.class));
 
-			assertThat(sut.order(0, "", 0)).isEqualTo(1);
+			assertThat(bookManagementService.order(0, "", 0)).isEqualTo(1);
 		}
 	}
 

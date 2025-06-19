@@ -22,7 +22,7 @@ import jp.co.solxyz.jsn.academy.junitsample.infrastructure.database.dto.BookMana
 class BookManagementTableRepositoryTest {
 
 	@Autowired
-	private BookManagementTableRepository sut;
+	private BookManagementTableRepository bookManagementTableRepository;
 
 	// テストデータ生成用のヘルパーメソッド
 	private static BookManagementTableDto createBook(int id, String name, int stock, int version) {
@@ -48,7 +48,7 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
 		})
 		void findAllSuccess2Records() {
-			var actual = sut.findAll();
+			var actual = bookManagementTableRepository.findAll();
 
 			assertThat(actual).hasSize(2);
 		}
@@ -59,7 +59,7 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
 		})
 		void findAllSuccess1Record() {
-			var actual = sut.findAll();
+			var actual = bookManagementTableRepository.findAll();
 
 			assertThat(actual).hasSize(1);
 		}
@@ -67,7 +67,7 @@ class BookManagementTableRepositoryTest {
 		@Test
 		@DisplayName("全件取得成功_0件")
 		void findAllSuccess0Records() {
-			var actual = sut.findAll();
+			var actual = bookManagementTableRepository.findAll();
 
 			assertThat(actual).hasSize(0);
 		}
@@ -79,7 +79,7 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
 		})
 		void findAllDataVerification() {
-			var actual = sut.findAll();
+			var actual = bookManagementTableRepository.findAll();
 
 			assertThat(actual.get(0).getBookId()).isEqualTo(SPRING_BOOT_BOOK.getBookId());
 			assertThat(actual.get(0).getBookName()).isEqualTo(SPRING_BOOT_BOOK.getBookName());
@@ -103,7 +103,7 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
 		})
 		void findByIdSuccess() {
-			var actual = sut.findById(1);
+			var actual = bookManagementTableRepository.findById(1);
 
 			assertThat(actual).isPresent();
 			assertThat(actual.get().getBookName()).isEqualTo(SPRING_BOOT_BOOK.getBookName());
@@ -114,7 +114,7 @@ class BookManagementTableRepositoryTest {
 		@Test
 		@DisplayName("ID指定取得_存在しないID")
 		void findByIdNotFound() {
-			var actual = sut.findById(999);
+			var actual = bookManagementTableRepository.findById(999);
 			assertThat(actual).isEmpty();
 		}
 	}
@@ -130,7 +130,7 @@ class BookManagementTableRepositoryTest {
 			dto.setStock(50);
 			dto.setVersion(1);
 
-			var actual = sut.saveAndFlush(dto);
+			var actual = bookManagementTableRepository.saveAndFlush(dto);
 
 			assertThat(actual.getBookId()).isNotNull();
 			assertThat(actual.getBookName()).isEqualTo("新しい書籍");
@@ -144,11 +144,11 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, '元の書籍名', 10, 1)"
 		})
 		void updateRecordSuccess() {
-			var existingDto = sut.findById(1).get();
+			var existingDto = bookManagementTableRepository.findById(1).get();
 			existingDto.setBookName("更新後の書籍名");
 			existingDto.setStock(20);
 
-			var actual = sut.saveAndFlush(existingDto);
+			var actual = bookManagementTableRepository.saveAndFlush(existingDto);
 
 			assertThat(actual.getBookId()).isEqualTo(1);
 			assertThat(actual.getBookName()).isEqualTo("更新後の書籍名");
@@ -166,14 +166,14 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, '削除対象書籍', 10, 1)"
 		})
 		void deleteRecordSuccess() {
-			var targetDto = sut.findById(1).get();
+			var targetDto = bookManagementTableRepository.findById(1).get();
 
-			sut.delete(targetDto);
+			bookManagementTableRepository.delete(targetDto);
 
-			var deleted = sut.findById(1);
+			var deleted = bookManagementTableRepository.findById(1);
 			assertThat(deleted).isEmpty();
 
-			var allBooks = sut.findAll();
+			var allBooks = bookManagementTableRepository.findAll();
 			assertThat(allBooks).hasSize(0);
 		}
 
@@ -184,9 +184,9 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, '残す書籍', 20, 1)"
 		})
 		void deleteByIdSuccess() {
-			sut.deleteById(1);
+			bookManagementTableRepository.deleteById(1);
 
-			var deleted = sut.findById(1);
+			var deleted = bookManagementTableRepository.findById(1);
 			assertThat(deleted).isEmpty();
 		}
 	}
@@ -201,14 +201,14 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (2, 'JUnit詳解', 200, 3)"
 		})
 		void countRecords2() {
-			var actual = sut.count();
+			var actual = bookManagementTableRepository.count();
 			assertThat(actual).isEqualTo(2);
 		}
 
 		@Test
 		@DisplayName("カウント取得成功_0件")
 		void countRecords0() {
-			var actual = sut.count();
+			var actual = bookManagementTableRepository.count();
 			assertThat(actual).isEqualTo(0);
 		}
 	}
@@ -222,14 +222,14 @@ class BookManagementTableRepositoryTest {
 				"INSERT INTO BOOK_MANAGEMENT_TBL (BOOK_ID, BOOK_NAME, STOCK, VERSION) VALUES (1, 'Spring boot実践入門', 10, 1)"
 		})
 		void existsByIdTrue() {
-			var actual = sut.existsById(1);
+			var actual = bookManagementTableRepository.existsById(1);
 			assertThat(actual).isTrue();
 		}
 
 		@Test
 		@DisplayName("存在確認_存在しない")
 		void existsByIdFalse() {
-			var actual = sut.existsById(999);
+			var actual = bookManagementTableRepository.existsById(999);
 			assertThat(actual).isFalse();
 		}
 	}

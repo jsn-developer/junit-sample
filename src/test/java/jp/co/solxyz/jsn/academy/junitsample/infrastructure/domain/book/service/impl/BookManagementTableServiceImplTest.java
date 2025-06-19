@@ -30,7 +30,7 @@ import jp.co.solxyz.jsn.academy.junitsample.infrastructure.database.repository.B
 class BookManagementTableServiceImplTest {
 
 	@InjectMocks
-	BookManagementTableServiceImpl sut;
+	BookManagementTableServiceImpl bookManagementTableService;
 
 	@Mock
 	BookManagementTableRepository bookManagementTableRepository;
@@ -47,7 +47,7 @@ class BookManagementTableServiceImplTest {
 
 			doReturn(mockList).when(bookManagementTableRepository).findAll();
 
-			var actual = sut.searchStockInfo();
+			var actual = bookManagementTableService.searchStockInfo();
 			assertThat(actual).hasSize(2);
 		}
 
@@ -59,7 +59,7 @@ class BookManagementTableServiceImplTest {
 
 			doReturn(mockList).when(bookManagementTableRepository).findAll();
 
-			var actual = sut.searchStockInfo();
+			var actual = bookManagementTableService.searchStockInfo();
 			assertThat(actual).hasSize(1);
 		}
 
@@ -70,7 +70,7 @@ class BookManagementTableServiceImplTest {
 
 			doReturn(emptyList).when(bookManagementTableRepository).findAll();
 
-			var actual = sut.searchStockInfo();
+			var actual = bookManagementTableService.searchStockInfo();
 			assertThat(actual).hasSize(0);
 		}
 
@@ -80,7 +80,7 @@ class BookManagementTableServiceImplTest {
 			doThrow(new DataIntegrityViolationException("DB Error")).when(bookManagementTableRepository).findAll();
 
 			assertThrows(DataIntegrityViolationException.class, () -> {
-				sut.searchStockInfo();
+				bookManagementTableService.searchStockInfo();
 			});
 		}
 	}
@@ -95,7 +95,7 @@ class BookManagementTableServiceImplTest {
 
 			doReturn(dto).when(bookManagementTableRepository).saveAndFlush(dto);
 
-			var actualDto = sut.updateStockInfo(dto);
+			var actualDto = bookManagementTableService.updateStockInfo(dto);
 			assertThat(actualDto).isEqualTo(dto);
 		}
 
@@ -107,7 +107,7 @@ class BookManagementTableServiceImplTest {
 			doThrow(new DataIntegrityViolationException("DB Error")).when(bookManagementTableRepository).saveAndFlush(dto);
 
 			assertThrows(DataIntegrityViolationException.class, () -> {
-				sut.updateStockInfo(dto);
+				bookManagementTableService.updateStockInfo(dto);
 			});
 		}
 	}
